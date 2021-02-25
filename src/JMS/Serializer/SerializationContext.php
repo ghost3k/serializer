@@ -61,6 +61,11 @@ class SerializationContext extends Context
         if (!\is_object($object)) {
             return false;
         }
+        
+        // Ember bugfix/workwround for skipping root element id if found in other arrays  
+        if (!$this->visitingStack->isEmpty() and $object === $this->visitingStack->bottom()) {
+            return false;
+        }
 
         return $this->visitingSet->contains($object);
     }
